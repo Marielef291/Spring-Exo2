@@ -67,4 +67,8 @@ public class StudentService {
                 .filter(student -> student.getLastname().equalsIgnoreCase(lastname))
                 .collect(Collectors.toList());
     }
+
+    public void addStudent(Student student){
+        students.put(student.getId(), student);
+    }
 }

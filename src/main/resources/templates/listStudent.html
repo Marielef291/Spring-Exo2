@@ -3,21 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des étudiants</title>
+    <th:block th:fragment="bootstrapImports">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </th:block>
 </head>
 <body>
-  <h1>Liste des étudiants</h1>
+<h1>Liste des étudiants</h1>
 
-  <div th:if="${students.isEmpty()}">
-      <p>Aucun étudiant trouvé</p>
-  </div>
+<div th:if="${students.isEmpty()}">
+    <p>Aucun étudiant trouvé</p>
+</div>
 
-  <ul th:if="${!students.isEmpty()}">
-      <li th:each="s : ${students}">
-          <span th:text="${s.getLastname()} + ' ' + ${s.getFirstname()}"></span>
-          <a th:href="@{/detail/{id}(id=${s.getId()})}">Voir détail</a>
-      </li>
-  </ul>
+<div th:if="${!students.isEmpty()}">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${students}">
+            <td th:text="${s.getLastname()}"></td>
+            <td th:text="${s.getFirstname()}"></td>
+            <td>
+                <a th:href="@{/detail/{id}(id=${s.getId()})}" class="btn btn-info btn-sm">Voir détail</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-  <p><a th:href="@{/}">Accueil</a></p>
+<p><a th:href="@{/}" class="btn btn-primary">Accueil</a></p>
+<p><a th:href="@{/add}" class="btn btn-success">Ajouter</a></p>
 </body>
+
 </html>

@@ -4,9 +4,7 @@ import org.example.exo2etudiant.model.Student;
 import org.example.exo2etudiant.service.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +40,18 @@ public class StudentController {
         List<Student> student = studentService.getStudentsByLastname(name);
         model.addAttribute("students", student);
         return "listStudent";
+    }
+
+    @RequestMapping("/add")
+    public String formulaire(Model model){
+        model.addAttribute("student", new Student());
+        return "addStudent";
+    }
+
+    @PostMapping("/add")
+    public String submitContact(@ModelAttribute("student") Student student){
+        studentService.addStudent(student);
+        return "redirect:/listStudent";
     }
     
 }
