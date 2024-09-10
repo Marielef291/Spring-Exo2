@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+</head>
+<body>
+<h1>Accueil</h1>
+<p><a th:href="@{/listStudent}">Voir la liste des étudiants</a></p> <br>
+<p><a th:href="@{/}">Inscription</a></p> <br>
+<form th:action="@{/search}" method="get"> <!-- Action vers la route "/search" -->
+    <input type="search" id="site-search" name="name" placeholder="Rechercher par nom" />
+    <button type="submit">Recherche</button>
+</form>
+</body>
+</html>
