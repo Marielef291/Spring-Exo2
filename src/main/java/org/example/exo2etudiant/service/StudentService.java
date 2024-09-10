@@ -69,6 +69,9 @@ public class StudentService {
     }
 
     public void addStudent(Student student){
+        if (student.getId() == null) {
+            student.setId(UUID.randomUUID());
+        }
         students.put(student.getId(), student);
     }
 }
