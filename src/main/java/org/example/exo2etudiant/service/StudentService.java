@@ -68,10 +68,43 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-    public void addStudent(Student student){
+//    public void addStudent(Student student){
+//        if (student.getId() == null) {
+//            student.setId(UUID.randomUUID());
+//        }
+//        students.put(student.getId(), student);
+//    }
+
+//    public void updateStudent(Student student){
+//       Student existingStudent = students.get(student.getId());
+//
+//       existingStudent.setLastname(student.getLastname());
+//       existingStudent.setFirstname(student.getFirstname());
+//       existingStudent.setEmail(student.getEmail());
+//       existingStudent.setAge(student.getAge());
+//       students.put(existingStudent.getId(), existingStudent);
+//    }
+
+    public void deleteStudent(UUID id){
+        students.remove(id);
+    }
+
+    public void saveOrUpdateStudent(Student student) {
         if (student.getId() == null) {
             student.setId(UUID.randomUUID());
+            students.put(student.getId(), student);
+        } else {
+            Student existingStudent = students.get(student.getId());
+
+            if (existingStudent != null) {
+                existingStudent.setLastname(student.getLastname());
+                existingStudent.setFirstname(student.getFirstname());
+                existingStudent.setEmail(student.getEmail());
+                existingStudent.setAge(student.getAge());
+            } else {
+                students.put(student.getId(), student);
+            }
         }
-        students.put(student.getId(), student);
     }
+
 }

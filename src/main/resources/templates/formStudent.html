@@ -10,33 +10,39 @@
 <span th:replace="~{listStudent :: navbar}"></span>
 
 <main>
-    <h1 class="text-center">Ajouter un étudiant</h1>
-    <form th:action="@{/add}" th:object="${student}" method="post">
+<!--    <h1 class="text-center" th:text="${isUpdate} ? 'Modifier un étudiant' : 'Ajouter un étudiant'"></h1>-->
+
+    <form th:action="@{/save}" th:object="${student}" method="post">
+
         <div class="container mt-4">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <label for="lastname">Nom</label>
-                        <input type="text" id="lastname" th:field="*{lastname}" class="form-control" required>
+                        <input type="text" id="lastname" th:field="*{lastname}" class="form-control" >
+                        <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="firstname">Prénom</label>
-                        <input type="text" id="firstname" th:field="*{firstname}" class="form-control" required>
+                        <input type="text" id="firstname" th:field="*{firstname}" class="form-control">
+                        <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="age">Âge</label>
-                        <input type="number" id="age" th:field="*{age}" class="form-control" required>
+                        <input type="number" id="age" th:field="*{age}" class="form-control" >
+                        <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="email">Email</label>
-                        <input type="email" id="email" th:field="*{email}" class="form-control" required>
+                        <input type="email" id="email" th:field="*{email}" class="form-control" >
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary me-2">Ajouter</button>
+                        <button type="submit" class="btn btn-primary me-2" th:text="${isUpdate} ? 'Mettre à jour' : 'Ajouter'"></button>
                         <a href="/" class="btn btn-secondary">Annuler</a>
                     </div>
                 </div>
@@ -44,6 +50,6 @@
         </div>
     </form>
 </main>
-
+<div class="background-logo"></div>
 </body>
 </html>
