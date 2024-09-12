@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     @RequestMapping("/search")
-    public String searchStudent(@RequestParam(name = "lastname", required = false) String lastname, Model model) {
+    public String searchStudent(@RequestParam(name = "name", required = false) String lastname, Model model) {
         List<Student> students = studentService.findByLastname(lastname);
         model.addAttribute("students", students);
         return "listStudent";

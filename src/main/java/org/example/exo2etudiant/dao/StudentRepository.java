@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 
-    List<Student> findByLastname(String lastname);
+    List<Student> findByLastnameContainingIgnoreCase(String lastname);
 
 }

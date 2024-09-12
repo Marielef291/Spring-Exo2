@@ -21,10 +21,10 @@ public class Student {
     private Integer id;
 
     @NotBlank(message = "Ce champ doit être rempli !")
-    private String lastname;
+    private String lastname; //nom de famille
 
     @NotBlank(message = "Ce champ doit être rempli !")
-    private String firstname;
+    private String firstname; //prénom
 
     @NotBlank(message = "Ce champ doit être rempli !")
     @Email
