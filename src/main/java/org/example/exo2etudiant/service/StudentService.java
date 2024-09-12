@@ -1,110 +1,34 @@
 package org.example.exo2etudiant.service;
 
+import org.example.exo2etudiant.dao.StudentRepository;
 import org.example.exo2etudiant.model.Student;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    private final Map<UUID, Student> students;
+    private final StudentRepository studentRepository;
 
-    public StudentService() {
-        students = new HashMap<>();
-
-        Student studentA = Student.builder()
-                .id(UUID.randomUUID())
-                .lastname("Toto")
-                .firstname("Bidule")
-                .email("toto.bidule@gmail.com")
-                .age(18)
-                .build();
-
-        Student studentB = Student.builder()
-                .id(UUID.randomUUID())
-                .lastname("Tata")
-                .firstname("Machin")
-                .email("tata.machin@gmail.com")
-                .age(25)
-                .build();
-
-        Student studentC = Student.builder()
-                .id(UUID.randomUUID())
-                .lastname("Titi")
-                .firstname("Chose")
-                .email("titi.chose@gmail.com")
-                .age(20)
-                .build();
-
-        Student studentD = Student.builder()
-                .id(UUID.randomUUID())
-                .lastname("Toto")
-                .firstname("Truc")
-                .email("toto.bidule@gmail.com")
-                .age(18)
-                .build();
-
-        students.put(studentA.getId(), studentA);
-        students.put(studentB.getId(), studentB);
-        students.put(studentC.getId(), studentC);
-        students.put(studentD.getId(), studentD);
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public List<Student> getAllStudents(){
-        return students.values().stream().toList();
+    public List<Student> findAll() {
+        return studentRepository.findAll();
+    }
+    public Student findById(int id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
-    public Student getStudentById(UUID id){
-        return students.get(id);
+    public List<Student> findByLastname(String lastname) {
+        return studentRepository.findByLastname(lastname);
     }
 
-    public List<Student> getStudentsByLastname(String lastname) {
-        return students.values().stream()
-                .filter(student -> student.getLastname().equalsIgnoreCase(lastname))
-                .collect(Collectors.toList());
+    public Student save(Student student) {
+        return studentRepository.save(student);
     }
-
-//    public void addStudent(Student student){
-//        if (student.getId() == null) {
-//            student.setId(UUID.randomUUID());
-//        }
-//        students.put(student.getId(), student);
-//    }
-
-//    public void updateStudent(Student student){
-//       Student existingStudent = students.get(student.getId());
-//
-//       existingStudent.setLastname(student.getLastname());
-//       existingStudent.setFirstname(student.getFirstname());
-//       existingStudent.setEmail(student.getEmail());
-//       existingStudent.setAge(student.getAge());
-//       students.put(existingStudent.getId(), existingStudent);
-//    }
-
-    public void deleteStudent(UUID id){
-        students.remove(id);
+    public void delete(Student student) {
+        studentRepository.delete(student);
     }
-
-    public void saveOrUpdateStudent(Student student) {
-        if (student.getId() == null) {
-            student.setId(UUID.randomUUID());
-            students.put(student.getId(), student);
-        } else {
-            Student existingStudent = students.get(student.getId());
-
-            if (existingStudent != null) {
-                existingStudent.setLastname(student.getLastname());
-                existingStudent.setFirstname(student.getFirstname());
-                existingStudent.setEmail(student.getEmail());
-                existingStudent.setAge(student.getAge());
-            } else {
-                students.put(student.getId(), student);
-            }
-        }
-    }
-
 }

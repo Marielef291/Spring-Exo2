@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class StudentController {
@@ -26,21 +25,21 @@ public class StudentController {
 
     @RequestMapping("/listStudent")
     public String listStudent(Model model) {
-        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("students", studentService.findAll());
         return "listStudent";
     }
 
     @RequestMapping("detail/{studentID}")
-    public String detail(@PathVariable("studentID") UUID id, Model model) {
-        Student student = studentService.getStudentById(id);
+    public String detail(@PathVariable("studentID") int id, Model model) {
+        Student student = studentService.findById(id);
         model.addAttribute("student", student);
         return "detail";
     }
 
-    @RequestMapping("/search") // /search?name=Toto
-    public String searchStudent(@RequestParam(name = "name", required = false) String name, Model model) {
-        List<Student> student = studentService.getStudentsByLastname(name);
-        model.addAttribute("students", student);
+    @RequestMapping("/search")
+    public String searchStudent(@RequestParam(name = "lastname", required = false) String lastname, Model model) {
+        List<Student> students = studentService.findByLastname(lastname);
+        model.addAttribute("students", students);
         return "listStudent";
     }
 
@@ -51,55 +50,44 @@ public class StudentController {
         return "formStudent";
     }
 
-//    @PostMapping("/add")
-//    public String submitStudent(@ModelAttribute("student") Student student){
-//        studentService.addStudent(student);
-//
-//        return "redirect:/listStudent";
-//    }
-
     @RequestMapping("/delete")
-    public String delete(@RequestParam("studentID") UUID id) {
-        System.out.println("delete");
-        studentService.deleteStudent(id);
+    public String delete(@RequestParam("studentID") int id) {
+        Student student = studentService.findById(id);
+        studentService.delete(student);
         return "redirect:/listStudent";
     }
 
     @RequestMapping("/update")
-    public String update(@RequestParam("studentID") UUID id, Model model) {
-        Student student = studentService.getStudentById(id);
+    public String update(@RequestParam("studentID") int id, Model model) {
+        Student student = studentService.findById(id);
         model.addAttribute("student", student);
         model.addAttribute("isUpdate", true);
         return "formStudent";
     }
 
-//    @PostMapping("/update")
-//    public String submitUpdateStudent(@RequestParam("studentID") UUID id, @ModelAttribute("student") Student student){
-//        student.setId(id);
-//        studentService.updateStudent(student);
-//        return "redirect:/listStudent";
-//    }
-
     @PostMapping("/save")
-    public String saveStudent(
-
-            @Valid @ModelAttribute("student") Student student,
-            Model model,
-            BindingResult bindingResult) {
-
-        System.out.println(student);
+    public String saveStudent(@Valid @ModelAttribute("student") Student student,
+                              BindingResult bindingResult,
+                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("student", new Student());
-            model.addAttribute("isUpdate", false);
-
-//            model.addAttribute("isUpdate", student.getId() != null);  // Si l'ID est présent, c'est une mise à jour
-            return "formStudent";  // Retourne à la page du formulaire
-        } else {
-            // Si aucune erreur, sauvegardez l'étudiant
-            studentService.saveOrUpdateStudent(student);
-            return "redirect:/listStudent";
+            return "formStudent";
         }
+        studentService.save(student);
+        return "redirect:/listStudent";
     }
 
+
+    @PostMapping("/update")
+    public String updateStudent(@RequestParam("studentID") int id,
+                                @Valid @ModelAttribute("student") Student student,
+                                BindingResult bindingResult,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            return "formStudent";
+        }
+        student.setId(id); // Assurez-vous que l'ID est bien mis à jour
+        studentService.save(student);
+        return "redirect:/listStudent";
+    }
 
 }
